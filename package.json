@@ -1,0 +1,20 @@
+{
+  "name": "drive-client",
+  "version": "1.0.0",
+  "description": "simple google drive client",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "tsc && node dist/index.js"
+  },
+  "keywords": [],
+  "author": "Yahiaoui Abderrahmane",
+  "license": "MIT",
+  "dependencies": {
+    "@googleapis/drive": "^8.3.1",
+    "googleapis": "^126.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.16"
+  }
+}
