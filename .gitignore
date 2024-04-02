@@ -1,5 +1,6 @@
 drive
 dist
+archive
 .vscode
 node_modules
 credentials.json
