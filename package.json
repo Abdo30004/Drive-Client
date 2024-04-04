@@ -3,12 +3,19 @@
   "version": "1.0.0",
   "description": "simple google drive client",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "dev": "ts-node index.ts",
-    "start": "tsc && node dist/index.js"
+    "test": "tsc && node dist/test/test.js",
+    "start": "npm run test",
+    "docs": "typedoc"
   },
-  "keywords": [],
+  "keywords": [
+    "google",
+    "drive",
+    "client",
+    "download"
+  ],
   "author": "Yahiaoui Abderrahmane",
   "license": "MIT",
   "dependencies": {
@@ -17,6 +24,7 @@
   },
   "devDependencies": {
     "@types/mime": "^3.0.4",
-    "@types/node": "^20.11.16"
+    "@types/node": "^20.11.16",
+    "typedoc": "^0.25.12"
   }
 }

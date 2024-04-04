@@ -1,9 +1,13 @@
-import { access } from "fs/promises";
+import { access, mkdir } from "fs/promises";
 import type { DriveFile } from "../base/driveFile";
-export function pathExists(path: string): Promise<boolean> {
-    return access(path)
-        .then(() => true)
-        .catch(() => false);
+export async function pathExists(path: string, create = false): Promise<boolean> {
+    let exists = await access(path).then(() => true).catch(() => false);
+
+    if (!exists && create) {
+        exists = await mkdir(path, { recursive: true }).then(() => true).catch(() => false);
+    }
+
+    return exists;
 }
 
 
@@ -39,4 +43,48 @@ export function calculateSize(files: DriveFile[]): number {
             size += Math.round(file.size) || 0;
     }
     return Math.round(size);
+}
+
+
+export function createProgressBar(stream: NodeJS.ReadableStream, totalSize: number) {
+    const width = 50;
+    const totalBlocks = width - 10;
+    let transferredBytes = 0;
+
+
+    /*
+        process.stdout.write('[');
+        process.stdout.write(' '.repeat(totalBlocks));
+        process.stdout.write('] 0%');
+    */
+    stream.on('data', (chunk) => {
+        transferredBytes += chunk.length;
+        const percentage = Math.floor((transferredBytes / totalSize) * 100);
+        const completedBlocks = Math.floor((transferredBytes / totalSize) * totalBlocks);
+        const remainingBlocks = totalBlocks - completedBlocks;
+
+        process.stdout.clearLine(1);
+        process.stdout.cursorTo(0);
+        process.stdout.write('[');
+        process.stdout.write('='.repeat(completedBlocks));
+        process.stdout.write(' '.repeat(remainingBlocks));
+        process.stdout.write('] ' + percentage + '%');
+
+        process.stdout.write(` ${formatSize(transferredBytes)}/${formatSize(totalSize)}`);
+
+        if (transferredBytes === totalSize) {
+            process.stdout.write('\n');
+        }
+    })
+
+}
+
+
+
+
+export function waitForEnd(stream: NodeJS.ReadableStream): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+        stream.on('end', () => resolve(true));
+        stream.on('error', () => reject(false));
+    });
 }
