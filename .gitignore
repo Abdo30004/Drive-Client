@@ -5,4 +5,5 @@ archive
 .vscode
 node_modules
 credentials.json
+test.ts
 package-lock.json
