@@ -4,14 +4,25 @@
 
 This is a simple client for Google Drive.It gets the list of files and folders in the root directory of the drive and also downloads the files from the drive to the local directory with the same directory structure.
 
-## Installation
+## Usage
 
-- Clone the repository
-- Install the dependencies using `npm install`
-- Get the credentials.json file from the Google Cloud Console and place it in the root directory of the project.
-- Set the `folder_id` in the index.ts file to the folderId of the root directory of the drive.
-- Run the project using `npm start`
-- The files will be downloaded to the local directory with the same directory structure as the drive.
+```typescript
+import { DriveClient } from "drive-client";
+import credentials from "./credentials.json"; // Google Drive API credentials (or use fs to read the file)
+
+async function main() {
+  const client = new DriveClient(credentials);
+  await client.authorize();
+  const fileId = "fileId";
+
+  let file = await client.getFileInfo(fileId);
+  if (!file) return;
+
+  console.log("File: ", file.name);
+}
+
+main();
+```
 
 ## Contributing
 
