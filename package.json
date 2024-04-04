@@ -10,9 +10,7 @@
     "start": "npm run test",
     "docs": "typedoc"
   },
-  "files": [
-    "dist/src"
-  ],
+ 
   "keywords": [
     "google",
     "drive",
